@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- `sigil keygen` generates a base64url webhook secret, 32 bytes by default,
+  with `--bytes` bounded to 16–64.
+
 ## 0.1.0
 
 Initial release.

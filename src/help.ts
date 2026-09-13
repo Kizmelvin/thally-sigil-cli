@@ -8,6 +8,7 @@ Usage
                  [--tolerance <seconds>] [--now <unix>] [--quiet]
   sigil inspect  --header <value> [--now <unix>]
   sigil backoff  [--attempts <n>] [--base <ms>] [--max <ms>]
+  sigil keygen   [--bytes <n>] [--prefix <s>]
 
 Secrets
   --secret <s>        A secret, given literally. Visible in ps and shell history.
@@ -35,4 +36,5 @@ Examples
   sigil verify --body payload.json --header "$SIG" --secret-env WEBHOOK_SECRET --quiet
   sigil inspect --header "t=1767225600,v1=6b1f..."
   sigil backoff --attempts 5
+  sigil keygen
 `;

@@ -30,6 +30,9 @@ sigil inspect --header "t=1767225600,v1=45b4..."
 
 # Print the retry schedule
 sigil backoff
+
+# Generate a secret to hand to a new endpoint
+sigil keygen
 ```
 
 ## Secrets

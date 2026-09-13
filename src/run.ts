@@ -1,6 +1,6 @@
 import { SigilError } from '@sigil/core';
 import { parseArgs, UsageError } from './args.js';
-import { cmdBackoff, cmdInspect, cmdSign, cmdVerify } from './commands.js';
+import { cmdBackoff, cmdInspect, cmdKeygen, cmdSign, cmdVerify } from './commands.js';
 import { EXIT_OK, EXIT_USAGE, exitCodeFor } from './exit-codes.js';
 import { HELP } from './help.js';
 
@@ -32,6 +32,9 @@ export function run(argv: readonly string[], streams: Streams): number {
         return EXIT_OK;
       case 'inspect':
         cmdInspect(args, streams.out);
+        return EXIT_OK;
+      case 'keygen':
+        cmdKeygen(args, streams.out);
         return EXIT_OK;
       case 'backoff':
         cmdBackoff(args, streams.out);
