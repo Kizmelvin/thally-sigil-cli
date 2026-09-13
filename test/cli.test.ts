@@ -175,3 +175,43 @@ describe('help', () => {
     expect(invoke(['frobnicate']).code).toBe(EXIT_USAGE);
   });
 });
+
+describe('keygen', () => {
+  it('prints a prefixed base64url secret', () => {
+    const r = invoke(['keygen']);
+    expect(r.code).toBe(EXIT_OK);
+    expect(r.out[0]).toMatch(/^whsec_[A-Za-z0-9_-]+$/);
+  });
+
+  it('produces 32 bytes of entropy by default', () => {
+    const secret = (invoke(['keygen']).out[0] as string).slice('whsec_'.length);
+    expect(Buffer.from(secret, 'base64url')).toHaveLength(32);
+  });
+
+  it('does not repeat itself', () => {
+    expect(invoke(['keygen']).out[0]).not.toBe(invoke(['keygen']).out[0]);
+  });
+
+  it('honours --bytes and --prefix', () => {
+    const r = invoke(['keygen', '--bytes', '16', '--prefix', 'sk_']);
+    expect(r.out[0]).toMatch(/^sk_/);
+    expect(Buffer.from((r.out[0] as string).slice(3), 'base64url')).toHaveLength(16);
+  });
+
+  it('refuses a secret short enough to brute-force', () => {
+    expect(invoke(['keygen', '--bytes', '8']).code).toBe(EXIT_USAGE);
+  });
+
+  it('refuses an absurdly long one', () => {
+    expect(invoke(['keygen', '--bytes', '100']).code).toBe(EXIT_USAGE);
+  });
+
+  it('generates a secret that actually round-trips', () => {
+    const secret = invoke(['keygen']).out[0] as string;
+    const header = sign(BODY, secret, { timestamp: TS });
+    const r = invoke([
+      'verify', '--body', bodyFile, '--header', header, '--secret', secret, '--now', String(TS),
+    ]);
+    expect(r.code).toBe(EXIT_OK);
+  });
+});

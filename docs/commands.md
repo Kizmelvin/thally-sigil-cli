@@ -73,3 +73,32 @@ total  15s
 The schedule is deterministic — no jitter. See
 [retry policy](https://github.com/fairsplitt/sigil-core/blob/main/docs/retry-policy.md)
 for why, and where to add your own.
+
+## `sigil keygen`
+
+```
+sigil keygen [--bytes <n>] [--prefix <s>]
+```
+
+Generates a webhook secret and prints it.
+
+| Flag       | Default    | Notes                                   |
+| ---------- | ---------- | --------------------------------------- |
+| `--bytes`  | `32`       | Entropy in bytes. Must be **16**–**64**. |
+| `--prefix` | `whsec_`   | Prepended to the encoded secret.         |
+
+```
+$ sigil keygen
+whsec_pC8kZ3nQx1vJ0hL5rT9wY2bN4mS6dF8gK7jH3aE1cX0
+```
+
+The secret is base64url — the same entropy as hex in a third fewer characters,
+with no `+`, `/` or `=` for a shell, a URL or a `.env` parser to mangle.
+
+Fewer than 16 bytes is rejected: a secret that short is worth brute-forcing
+offline against a single captured signature. More than 64 is rejected too,
+which catches a mistyped `--bytes 1000000` before it produces an unusable
+header.
+
+The prefix is a convention, not a checked format. It exists so that a secret
+which leaks into a log or a public repository is recognisable to a scanner.

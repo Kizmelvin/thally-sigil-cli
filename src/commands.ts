@@ -10,6 +10,7 @@ import {
 } from '@sigil/core';
 import { allStrings, boolFlag, intFlag, stringFlag, UsageError, type ParsedArgs } from './args.js';
 import { readBody, readSecrets } from './body.js';
+import { DEFAULT_SECRET_BYTES, generateSecret, SECRET_PREFIX } from './keygen.js';
 
 function secretsFrom(args: ParsedArgs): string[] {
   return readSecrets(allStrings(args, 'secret'), allStrings(args, 'secret-env'));
@@ -48,6 +49,12 @@ export function cmdInspect(args: ParsedArgs, out: (line: string) => void): void 
   out(`within      ${Math.abs(age) <= DEFAULT_TOLERANCE_SECONDS ? 'yes' : 'no'}  (tolerance ${DEFAULT_TOLERANCE_SECONDS}s)`);
   out(`signatures  ${parsed.signatures.length}`);
   for (const signature of parsed.signatures) out(`  v1  ${signature}`);
+}
+
+export function cmdKeygen(args: ParsedArgs, out: (line: string) => void): void {
+  const bytes = intFlag(args, 'bytes') ?? DEFAULT_SECRET_BYTES;
+  const prefix = stringFlag(args, 'prefix') ?? SECRET_PREFIX;
+  out(generateSecret(bytes, prefix));
 }
 
 export function cmdBackoff(args: ParsedArgs, out: (line: string) => void): void {
