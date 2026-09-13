@@ -1,0 +1,32 @@
+{
+  "name": "@sigil/cli",
+  "version": "0.1.0",
+  "description": "Sign, verify and inspect Sigil webhook signatures from the command line, and print the delivery retry schedule.",
+  "license": "MIT",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "bin": { "sigil": "./dist/src/cli.js" },
+  "files": ["dist", "README.md", "CHANGELOG.md", "LICENSE", "docs"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fairsplitt/sigil-cli.git"
+  },
+  "keywords": ["webhook", "hmac", "signature", "cli", "sigil"],
+  "publishConfig": { "access": "public" },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "dependencies": {
+    "@sigil/core": "^0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.0",
+    "typescript": "^5.9.3",
+    "vitest": "4.0.18"
+  }
+}
