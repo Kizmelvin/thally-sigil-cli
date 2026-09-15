@@ -1,0 +1,47 @@
+---
+title: Quickstart
+description: Verify your first webhook signature in under two minutes.
+---
+
+# Quickstart
+
+## 1. Install
+
+```bash
+npm install -g @fairsplitt/sigil-cli
+```
+
+## 2. Generate a secret
+
+```bash
+sigil keygen
+# sk_live_a3f8c2e1d9b4...
+```
+
+## 3. Verify a signature
+
+```bash
+sigil verify \
+  --payload '{"event":"payment.completed","amount":4200}' \
+  --signature "sha256=abc123..." \
+  --secret "sk_live_a3f8c2e1d9b4..."
+```
+
+Output on success:
+```
+✓ Signature valid
+```
+
+## 4. Inspect the retry schedule
+
+```bash
+sigil inspect --webhook-id wh_01abc
+```
+
+```
+Attempt 1 — immediate
+Attempt 2 — 5 minutes
+Attempt 3 — 30 minutes
+Attempt 4 — 2 hours
+Attempt 5 — 8 hours
+```

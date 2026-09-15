@@ -1,0 +1,48 @@
+---
+title: sigil verify
+description: Verify a webhook signature against a secret.
+---
+
+# sigil verify
+
+Verifies an HMAC-SHA256 webhook signature. Exits `0` on success, `1` on failure —
+safe to use in scripts and CI.
+
+## Usage
+
+```bash
+sigil verify --payload <string> --signature <string> --secret <string>
+```
+
+## Options
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--payload` | Yes | The raw webhook request body |
+| `--signature` | Yes | The `X-Sigil-Signature` header value |
+| `--secret` | Yes | Your webhook signing secret |
+
+## Examples
+
+```bash
+sigil verify \
+  --payload '{"event":"charge.succeeded"}' \
+  --signature "sha256=3b4c..." \
+  --secret "sk_live_abc123"
+```
+
+Pipe payload from stdin:
+
+```bash
+cat payload.json | sigil verify \
+  --signature "sha256=3b4c..." \
+  --secret "sk_live_abc123"
+```
+
+## Exit codes
+
+| Code | Meaning |
+|------|---------|
+| `0` | Signature valid |
+| `1` | Signature invalid |
+| `2` | Bad arguments |

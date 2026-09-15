@@ -1,0 +1,53 @@
+---
+title: sigil inspect
+description: Print the delivery retry schedule for a Sigil webhook.
+---
+
+# sigil inspect
+
+Prints the full delivery retry schedule for a webhook.
+
+## Usage
+
+```bash
+sigil inspect --webhook-id <id> [options]
+```
+
+## Options
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--webhook-id` | Yes | The Sigil webhook ID (`wh_...`) |
+| `--from-attempt <n>` | No | Start from attempt N. Default: `1` |
+| `--format` | No | `table` (default) or `json` |
+
+## Examples
+
+```bash
+sigil inspect --webhook-id wh_01abc
+```
+
+```
+Attempt   Delay        Cumulative
+1         immediate    T+0
+2         5m           T+5m
+3         30m          T+35m
+4         2h           T+2h 35m
+5         8h           T+10h 35m
+```
+
+JSON output:
+
+```bash
+sigil inspect --webhook-id wh_01abc --format json
+```
+
+```json
+[
+  { "attempt": 1, "delaySeconds": 0 },
+  { "attempt": 2, "delaySeconds": 300 },
+  { "attempt": 3, "delaySeconds": 1800 },
+  { "attempt": 4, "delaySeconds": 7200 },
+  { "attempt": 5, "delaySeconds": 28800 }
+]
+```

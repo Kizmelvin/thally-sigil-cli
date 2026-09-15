@@ -1,0 +1,39 @@
+---
+title: sigil keygen
+description: Generate a cryptographically secure webhook signing secret.
+---
+
+# sigil keygen
+
+Generates a secure webhook signing secret using Node's `crypto.randomBytes`.
+
+## Usage
+
+```bash
+sigil keygen [options]
+```
+
+## Options
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--length <n>` | `32` | Secret length in bytes |
+| `--prefix <string>` | `sk_live_` | Prefix prepended to the secret |
+| `--no-prefix` | — | Omit the prefix entirely |
+
+## Examples
+
+```bash
+sigil keygen
+# sk_live_a3f8c2e1d9b47f230c91...
+
+sigil keygen --no-prefix
+# a3f8c2e1d9b47f230c91...
+```
+
+## Secret rotation
+
+1. Generate a new secret with `sigil keygen`
+2. Register the new secret with your webhook sender
+3. During the grace period, verify against both old and new secrets
+4. Once all deliveries use the new secret, retire the old one

@@ -1,0 +1,32 @@
+---
+title: Introduction
+description: Sign, verify, and inspect Sigil webhook signatures from the command line.
+---
+
+# sigil-cli
+
+`sigil-cli` is a command-line tool for working with Sigil webhook signatures.
+Verify incoming payloads, generate webhook secrets, and inspect delivery retry
+schedules — without writing a single line of code.
+
+## What it does
+
+| Command | What it does |
+|---------|-------------|
+| `sigil verify` | Verify a webhook signature against a secret |
+| `sigil keygen` | Generate a cryptographically secure webhook secret |
+| `sigil inspect` | Print the full delivery retry schedule for a webhook |
+
+## Who it's for
+
+- **Platform engineers** validating webhook security in staging
+- **Backend developers** debugging signature mismatches in production
+- **DevOps teams** scripting webhook verification in CI pipelines
+
+## Install
+
+```bash
+npm install -g @fairsplitt/sigil-cli
+```
+
+Requires Node.js 18 or later.
